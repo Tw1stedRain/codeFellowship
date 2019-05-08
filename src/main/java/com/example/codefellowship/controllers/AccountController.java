@@ -4,11 +4,15 @@ import com.example.codefellowship.database.AppUser;
 import com.example.codefellowship.database.AppUserRepo;
 import com.example.codefellowship.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +34,7 @@ public class AccountController {
     //POST sign up
     // save to db
     @PostMapping("/signup")
-    public String postSignup(
+    public RedirectView postSignup(
             @RequestParam String username,
             @RequestParam String password,
             @RequestParam String firstName,
@@ -48,13 +52,33 @@ public class AccountController {
 
         repo.save(user);
 
-        // for now, no such thing as login
-        return "/login";
+        // auto login
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                user, null, user.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(token);
+
+        String redirect = "/user/" + user.getId();
+        return new RedirectView(redirect);
     }
 
-    // login - not required at this point
+    // login
+    @GetMapping("/login")
+    public String getLogin() {
+        return "login";
+    }
 
-    // view account (single user)
+    @GetMapping("/myprofile")
+    public RedirectView myProfile(
+            Model model,
+            Principal principal
+    ) {
+        AppUser user = repo.findByUsername(principal.getName());
+        return new RedirectView("/user/" + user.getId());
+    }
+
+
+    // /myprofile
     @GetMapping("/user/{id}")
     public String getUser(
             @PathVariable Long id,
@@ -75,7 +99,6 @@ public class AccountController {
     @GetMapping("/login-error")
     @ResponseBody
     public String getLoginError() {
-
         return "Bad Username/Password";
     }
 

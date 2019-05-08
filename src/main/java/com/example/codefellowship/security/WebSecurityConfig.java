@@ -39,30 +39,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable()
 
-                .authorizeRequests()
-                .antMatchers("/*").permitAll();
-
 //                .authorizeRequests()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/login*").permitAll()
-//                .antMatchers("/signup*").permitAll()
-//                .antMatchers("/style.css").permitAll()
-//                .anyRequest().authenticated()
-//
-//                // configure login
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/login-error")
-//
-//                // configure logout
-//                .and()
-//                .logout()
-//                .logoutUrl("/perform_logout")
-//                .logoutSuccessUrl("/login")
-//                .deleteCookies("JSESSIONID")
+//                .antMatchers("/*").permitAll();
+
+                .authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/login*").permitAll()
+                .antMatchers("/signup*").permitAll()
+                .antMatchers("/style.css").permitAll()
+                .anyRequest().authenticated()
+
+                // configure login
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/myprofile")
+                .failureUrl("/login-error")
+
+                // configure logout
+                .and()
+                .logout()
+                .logoutUrl("/perform_logout")
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
         ;
     }
 }
