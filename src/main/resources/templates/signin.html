@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sign up!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Sign Up for Code Fellowship!!</h1>
+
+    <form action="/signup" method="post">
+        <input type="text" name="username" required placeholder="Username"/>
+        <input type="password" name="password" required placeholder="Password"/>
+        <input type="text" name="firstName" required placeholder="First Name"/>
+        <input type="text" name="lastName" required placeholder="Last Name"/>
+        <input type="text" name="dateOfBirth" required placeholder="Date of Birth"/>
+        <input type="text" name="bio" required placeholder="Bio"/>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
