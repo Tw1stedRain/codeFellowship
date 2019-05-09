@@ -27,6 +27,7 @@ user's first/last names, DOB, and bio are all able to be seen at the `/user/{id}
 
 still unfamiliar w/ these, would like additional walkthroughs
 
+
 ## Day 2 - Posts
 
 ### Ensure that your homepage, login, and registration routes are accessible to non-logged in users. All other routes should be limited to logged-in users.
@@ -51,3 +52,4 @@ A post can be created by a user, and belongs to the user that created it. **Meth
 ### When a user is logged in, the app should display the user’s username on every page (probably in the heading).
 
 **Still in need of implimentation** 
+
