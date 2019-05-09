@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -23,37 +24,27 @@ public class PostController {
     @Autowired
     PostRepo postRepo;
 
+    @GetMapping("/newpost")
+    public String getNewPost() {
+        return "post";
+    }
+
     // create post
     @PostMapping("/newpost")
     public RedirectView newPost(
             @RequestParam String body,
-            @RequestParam Date createdAt
-            ) {
+            @RequestParam String createdAt,
+            Principal principal
+    ) {
         Post post = new Post();
         post.setBody(body);
         post.setCreatedAt(createdAt);
+        post.setUser(userRepo.findByUsername(principal.getName()));
 
         postRepo.save(post);
 
-        return new RedirectView("/post/" + post.getId());
+        return new RedirectView("/post");
     }
-
-    // view post
-    @GetMapping("/post/{id}")
-    public String getPost(
-            @PathVariable Long id,
-            Model model
-    ) {
-        Optional<Post> foundPost = this.postRepo.findById(id);
-
-        if (foundPost.isPresent()) {
-            model.addAttribute("post", foundPost.get());
-            return "post";
-        } else {
-            throw new PostNotFoundException();
-        }
-    }
-
 
     // update post - not needed yet
 
