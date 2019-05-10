@@ -2,6 +2,8 @@ package com.example.codefellowship.controllers;
 
 import com.example.codefellowship.database.AppUser;
 import com.example.codefellowship.database.AppUserRepo;
+import com.example.codefellowship.database.Post;
+import com.example.codefellowship.database.PostRepo;
 import com.example.codefellowship.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,11 +25,13 @@ public class AccountController {
     AppUserRepo repo;
 
     @Autowired
+    PostRepo postRepo;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @GetMapping("/signup")
-    public String getSignUp()
-    {
+    public String getSignUp() {
         return "signin";
     }
 
@@ -87,7 +91,13 @@ public class AccountController {
         Optional<AppUser> foundUser = this.repo.findById(id);
 
         if (foundUser.isPresent()) {
-            model.addAttribute("user", foundUser.get());
+            AppUser user = foundUser.get();
+
+            List<Post> posts = user.getPosts();
+
+            model.addAttribute("user", user);
+            model.addAttribute("posts", posts);
+
             return "user";
         } else {
             throw new UserNotFoundException();

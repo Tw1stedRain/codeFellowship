@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.util.Date;
 
 @Entity
 public class Post {
@@ -13,11 +12,13 @@ public class Post {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
-    private AppUser user;
 
     private String body;
-    private Date createdAt;
+    private String createdAt;
+
+    @ManyToOne
+    public AppUser user;
+
 
     public long getId() {
         return id;
@@ -43,11 +44,11 @@ public class Post {
         this.body = body;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

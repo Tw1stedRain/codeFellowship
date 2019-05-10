@@ -16,8 +16,6 @@ public class AppUser implements UserDetails {
     @GeneratedValue
     private long id;
 
-    @OneToMany(mappedBy = "AppUser")
-    List<Post> posts;
 
     @Column(unique = true)
     private String username;
@@ -27,6 +25,15 @@ public class AppUser implements UserDetails {
     private String lastName;
     private String dateOfBirth;
     private String bio;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
+    public AppUser() {
+        posts = new ArrayList<>();
+    }
+
 
     public long getId() {
         return this.id;
@@ -111,5 +118,13 @@ public class AppUser implements UserDetails {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }
