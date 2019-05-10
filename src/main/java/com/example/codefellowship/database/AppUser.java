@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class AppUser implements UserDetails {
@@ -27,6 +28,7 @@ public class AppUser implements UserDetails {
     private String bio;
 
 
+    // one to many - posts
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
@@ -34,12 +36,16 @@ public class AppUser implements UserDetails {
         posts = new ArrayList<>();
     }
 
+    // manytomany self-join - follows
 
-    public long getId() {
-        return this.id;
-    }
+    @OneToMany(mappedBy = "followedBy")
+    private Set<UserFollow> follows;
+
+    @OneToMany(mappedBy = "following")
+    private Set<UserFollow> following;
 
 
+    // overrides
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();
@@ -48,24 +54,6 @@ public class AppUser implements UserDetails {
             list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         return list;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
     }
 
     @Override
@@ -88,30 +76,35 @@ public class AppUser implements UserDetails {
         return true;
     }
 
-    public String getLastName() {
-        return lastName;
+    // getters adn setters
+
+
+    // id
+    public long getId() {
+        return this.id;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    //password
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    // username
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getBio() {
-        return bio;
+    @Override
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
+    // first name
     public String getFirstName() {
         return firstName;
     }
@@ -120,11 +113,56 @@ public class AppUser implements UserDetails {
         this.firstName = firstName;
     }
 
+    // last name
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    //DOB
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    // bio
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    // posts
     public List<Post> getPosts() {
         return posts;
     }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    // follows
+    public Set<UserFollow> getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Set<UserFollow> follows) {
+        this.follows = follows;
+    }
+
+    public Set<UserFollow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<UserFollow> following) {
+        this.following = following;
     }
 }
